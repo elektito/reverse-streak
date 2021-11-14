@@ -1,6 +1,7 @@
 extends Control
 
-const HORIZONTAL_SPEED := 140.0
+const HORIZONTAL_SPEED := 220.0
+const VERTICAL_SPEED := 220.0
 
 var reversed := false
 
@@ -23,7 +24,7 @@ func _physics_process(delta):
 		dir = -dir
 	
 	ship.position += dir * HORIZONTAL_SPEED * delta
-	camera.position.y -= 100 * delta
+	camera.position.y -= VERTICAL_SPEED * delta
 	
 	if Input.is_action_just_pressed("shoot"):
 		var bullet = preload("res://Bullet.tscn").instance()
