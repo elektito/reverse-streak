@@ -1,7 +1,7 @@
 extends Control
 
-const HORIZONTAL_SPEED := 220.0
-const VERTICAL_SPEED := 320.0
+const HORIZONTAL_SPEED := 240.0
+const VERTICAL_SPEED := 380.0
 
 var score := 0
 var reversed := false
