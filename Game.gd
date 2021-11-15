@@ -48,6 +48,7 @@ func _on_enemy_spawn_timer_timeout():
 	var enemy = preload("res://Enemy.tscn").instance()
 	enemy.position.x = rand_range(32, rect_size.x - 32)
 	enemy.position.y = $camera.position.y - 100
+	enemy.ship = ship
 	enemy.connect("killed", self, "_on_enemy_killed")
 	add_child(enemy)
 
