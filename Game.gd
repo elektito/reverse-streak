@@ -1,12 +1,14 @@
 extends Control
 
 const HORIZONTAL_SPEED := 220.0
-const VERTICAL_SPEED := 220.0
+const VERTICAL_SPEED := 320.0
 
+var score := 0
 var reversed := false
 
 onready var camera = $camera
 onready var ship = $camera/ship
+onready var score_label = $hud/score_label
 
 func _ready():
 	ship.position.x = rect_size.x / 2 - ship.size.x / 2
@@ -42,8 +44,17 @@ func _on_Timer_timeout():
 		$ParallaxBackground/ParallaxLayer/Sprite.modulate = Color.white
 
 
-func _on_Timer2_timeout():
+func _on_enemy_spawn_timer_timeout():
 	var enemy = preload("res://Enemy.tscn").instance()
 	enemy.position.x = rand_range(32, rect_size.x - 32)
 	enemy.position.y = $camera.position.y - 100
+	enemy.connect("killed", self, "_on_enemy_killed")
 	add_child(enemy)
+
+
+func _on_enemy_killed(enemy):
+	score += 1
+
+
+func _process(delta):
+	score_label.text = str(score)
