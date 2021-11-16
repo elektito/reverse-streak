@@ -2,6 +2,10 @@ extends Area2D
 
 signal killed(enemy)
 
+enum EnemyType { NORMAL_ENEMY, MOTHERSHIP }
+
+export(EnemyType) var type = EnemyType.NORMAL_ENEMY setget set_type, get_type
+
 var ship
 
 var keep_y = false
@@ -20,8 +24,6 @@ func _physics_process(delta):
 	
 	if keep_y and ship:
 		global_position.y = ship.global_position.y
-	
-	print(global_position.y, ' ', ship.global_position.y)
 
 
 func _on_death_timer_timeout():
@@ -30,3 +32,16 @@ func _on_death_timer_timeout():
 
 func die():
 	queue_free()
+
+
+func set_type(value: int):
+	type = value
+	var sprites := {
+		EnemyType.NORMAL_ENEMY: preload("res://assets/enemy1.png"),
+		EnemyType.MOTHERSHIP: preload("res://assets/enemy2.png"),
+	}
+	$sprite.texture = sprites[type]
+
+
+func get_type() -> int:
+	return type

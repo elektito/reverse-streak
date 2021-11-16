@@ -48,10 +48,6 @@ smoothing_enabled = true
 
 [node name="ship" parent="camera" instance=ExtResource( 2 )]
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 5.0
-autostart = true
-
 [node name="enemy_spawn_timer" type="Timer" parent="."]
 wait_time = 2.0
 autostart = true
@@ -69,5 +65,4 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="timeout" from="enemy_spawn_timer" to="." method="_on_enemy_spawn_timer_timeout"]

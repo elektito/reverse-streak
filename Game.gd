@@ -4,6 +4,7 @@ const HORIZONTAL_SPEED := 240.0
 const VERTICAL_SPEED := 380.0
 
 var score := 0
+var multiplier := 1
 var reversed := false
 
 onready var camera = $camera
@@ -36,26 +37,30 @@ func _physics_process(delta):
 		camera.add_child(bullet)
 
 
-func _on_Timer_timeout():
-	reversed = not reversed
-	if reversed:
-		$ParallaxBackground/ParallaxLayer/Sprite.modulate = Color.red
-	else:
-		$ParallaxBackground/ParallaxLayer/Sprite.modulate = Color.white
-
-
 func _on_enemy_spawn_timer_timeout():
 	var enemy = preload("res://Enemy.tscn").instance()
 	enemy.position.x = rand_range(32, rect_size.x - 32)
 	enemy.position.y = $camera.position.y - 100
 	enemy.ship = ship
+	enemy.type = 1 if randf() < 0.1 else 0
 	enemy.connect("killed", self, "_on_enemy_killed")
 	add_child(enemy)
 
 
 func _on_enemy_killed(enemy):
-	score += 1
+	score += 1 * multiplier
+	if enemy.type == 1:
+		multiplier *= 2
+		reverse_controls()
 
 
 func _process(delta):
 	score_label.text = str(score)
+
+
+func reverse_controls():
+	reversed = not reversed
+	if reversed:
+		$ParallaxBackground/ParallaxLayer/Sprite.modulate = Color.red
+	else:
+		$ParallaxBackground/ParallaxLayer/Sprite.modulate = Color.white
