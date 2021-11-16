@@ -46,3 +46,11 @@ func set_size(value: Vector2):
 
 func get_size() -> Vector2:
 	return sprite.texture.get_size()
+
+
+func _on_Ship_area_entered(area):
+	die()
+
+
+func die():
+	get_tree().reload_current_scene()
