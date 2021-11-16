@@ -53,6 +53,7 @@ wait_time = 5.0
 autostart = true
 
 [node name="enemy_spawn_timer" type="Timer" parent="."]
+wait_time = 2.0
 autostart = true
 
 [node name="hud" type="CanvasLayer" parent="."]
