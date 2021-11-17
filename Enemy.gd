@@ -31,6 +31,12 @@ func _on_death_timer_timeout():
 
 
 func die():
+	$death_sound.play()
+	visible = false
+	$shape.set_deferred("disabled", false)
+	set_deferred("monitorable", false)
+	set_deferred("monitoring", false)
+	yield($death_sound, "finished")
 	queue_free()
 
 

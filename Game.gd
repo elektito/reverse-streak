@@ -10,6 +10,7 @@ var reversed := false
 onready var camera = $camera
 onready var ship = $camera/ship
 onready var score_label = $hud/score_label
+onready var shoot_sound = $shoot_sound
 
 func _ready():
 	ship.position.x = rect_size.x / 2 - ship.size.x / 2
@@ -35,6 +36,7 @@ func _physics_process(delta):
 		bullet.position.y = ship.position.y - 2
 		bullet.direction = Vector2.UP
 		camera.add_child(bullet)
+		shoot_sound.play()
 
 
 func _on_enemy_spawn_timer_timeout():
