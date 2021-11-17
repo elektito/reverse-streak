@@ -12,9 +12,18 @@ onready var ship = $camera/ship
 onready var score_label = $hud/score_label
 onready var shoot_sound = $shoot_sound
 
+onready var ship_size: Vector2 = ship.sprite.texture.get_size()
+
 func _ready():
 	ship.position.x = rect_size.x / 2 - ship.size.x / 2
 	ship.position.y = rect_size.y - 80
+	
+	# fire the timer once at the time it takes to scroll one row (plus some)
+	var row_height = ship_size.y
+	var pixel_scroll_time = 1.0 / VERTICAL_SPEED
+	var row_scroll_time = row_height * pixel_scroll_time
+	row_scroll_time = (row_height + 5) / VERTICAL_SPEED
+	$enemy_spawn_timer.start(row_scroll_time)
 
 
 func _physics_process(delta):
@@ -40,8 +49,12 @@ func _physics_process(delta):
 
 
 func _on_enemy_spawn_timer_timeout():
+	if randf() > 0.1:
+		return
 	var enemy = preload("res://Enemy.tscn").instance()
-	enemy.position.x = rand_range(32, rect_size.x - 32)
+	var columns = int(floor((rect_size.x - 2 * ship_size.x) / ship_size.x))
+	var column = randi() % columns
+	enemy.position.x = 32 + column * ship_size.x
 	enemy.position.y = $camera.position.y - 100
 	enemy.ship = ship
 	enemy.type = 1 if randf() < 0.1 else 0
