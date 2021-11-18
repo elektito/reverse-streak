@@ -3,6 +3,9 @@ extends Control
 const HORIZONTAL_SPEED := 240.0
 const VERTICAL_SPEED := 380.0
 
+var enemy_spawn_rate = 0.08
+var mothership_spawn_rate = 0.1
+
 var score := 0
 var multiplier := 1
 var reversed := false
@@ -49,15 +52,15 @@ func _physics_process(delta):
 
 
 func _on_enemy_spawn_timer_timeout():
-	if randf() > 0.1:
+	if randf() > enemy_spawn_rate:
 		return
 	var enemy = preload("res://Enemy.tscn").instance()
 	var columns = int(floor((rect_size.x - 2 * ship_size.x) / ship_size.x))
 	var column = randi() % columns
-	enemy.position.x = 32 + column * ship_size.x
+	enemy.position.x = ship_size.x + column * ship_size.x
 	enemy.position.y = $camera.position.y - 100
 	enemy.ship = ship
-	enemy.type = 1 if randf() < 0.1 else 0
+	enemy.type = 1 if randf() < mothership_spawn_rate else 0
 	enemy.connect("killed", self, "_on_enemy_killed")
 	add_child(enemy)
 
