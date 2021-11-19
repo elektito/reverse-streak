@@ -1,8 +1,12 @@
 extends Area2D
 
+signal death_started()
+signal died()
+
 export (Vector2) var game_screen_size := Vector2(ProjectSettings.get('display/window/size/width'), ProjectSettings.get('display/window/size/height'))
 
 var size := Vector2.ZERO setget set_size, get_size
+var has_died := false
 
 onready var sprite: Sprite = $sprite
 onready var shape: CollisionPolygon2D = $shape
@@ -49,8 +53,24 @@ func get_size() -> Vector2:
 
 
 func _on_Ship_area_entered(area):
-	die()
+	if not has_died:
+		die()
 
 
 func die():
+	has_died = true
+	emit_signal("death_started")
+	$sprite.visible = false
+	$explosion_disc.visible = true
+	$shape.set_deferred("disabled", true)
+	$trail_particles.visible = false
+	$explosion_particles.emitting = true
+	yield(get_tree().create_timer(0.02), "timeout")
+	$explosion_disc.visible = false
+	yield(get_tree().create_timer(0.02), "timeout")
+	$explosion_disc.visible = true
+	yield(get_tree().create_timer(0.02), "timeout")
+	$explosion_disc.visible = false
+	yield(get_tree().create_timer($explosion_particles.lifetime * 8), "timeout")
+	emit_signal("died")
 	get_tree().reload_current_scene()

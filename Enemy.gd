@@ -7,8 +7,9 @@ enum EnemyType { NORMAL_ENEMY, MOTHERSHIP }
 export(EnemyType) var type = EnemyType.NORMAL_ENEMY setget set_type, get_type
 
 var ship
-
 var keep_y = false
+
+onready var sprite = $sprite
 
 func _on_Enemy_area_entered(area):
 	if area.is_in_group("bullets"):
@@ -18,9 +19,11 @@ func _on_Enemy_area_entered(area):
 
 
 func _physics_process(delta):
-	if ship and global_position.y >= ship.global_position.y and not keep_y:
+	if ship and not ship.has_died and global_position.y >= ship.global_position.y and not keep_y:
 		$death_timer.start()
 		keep_y = true
+	elif ship.has_died and global_position.y >= ship.get_parent().get_parent().rect_size.y + sprite.texture.get_size().y:
+		die()
 	
 	if keep_y and ship:
 		global_position.y = ship.global_position.y

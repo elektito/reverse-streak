@@ -30,6 +30,10 @@ func _ready():
 
 
 func _physics_process(delta):
+	camera.position.y -= VERTICAL_SPEED * delta
+	if ship.has_died:
+		return
+	
 	var dir = Vector2.ZERO
 	if Input.is_action_pressed("left"):
 		dir = Vector2.LEFT
@@ -40,7 +44,6 @@ func _physics_process(delta):
 		dir = -dir
 	
 	ship.position += dir * HORIZONTAL_SPEED * delta
-	camera.position.y -= VERTICAL_SPEED * delta
 	
 	if Input.is_action_just_pressed("shoot"):
 		var bullet = preload("res://Bullet.tscn").instance()
@@ -70,6 +73,10 @@ func _on_enemy_killed(enemy):
 	if enemy.type == 1:
 		multiplier *= 2
 		reverse_controls()
+
+
+func _on_ship_death_started():
+	pass
 
 
 func _process(delta):

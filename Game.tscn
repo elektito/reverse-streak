@@ -75,4 +75,5 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[connection signal="death_started" from="camera/ship" to="." method="_on_ship_death_started"]
 [connection signal="timeout" from="enemy_spawn_timer" to="." method="_on_enemy_spawn_timer_timeout"]
