@@ -76,7 +76,7 @@ func _on_enemy_killed(enemy):
 
 
 func _on_ship_death_started():
-	pass
+	$camera/screen_shake.start(0.35, 60, 5)
 
 
 func _process(delta):

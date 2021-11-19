@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Game.gd" type="Script" id=1]
 [ext_resource path="res://Ship.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://assets/bg2.png" type="Texture" id=5]
 [ext_resource path="res://assets/shoot1.wav" type="AudioStream" id=6]
 [ext_resource path="res://assets/space-fighter-loop.ogg" type="AudioStream" id=7]
+[ext_resource path="res://ScreenShake.tscn" type="PackedScene" id=8]
 
 [node name="Game" type="Control"]
 anchor_right = 1.0
@@ -49,6 +50,8 @@ current = true
 smoothing_enabled = true
 
 [node name="ship" parent="camera" instance=ExtResource( 2 )]
+
+[node name="screen_shake" parent="camera" instance=ExtResource( 8 )]
 
 [node name="enemy_spawn_timer" type="Timer" parent="."]
 wait_time = 2.0
