@@ -8,6 +8,7 @@ var mothership_spawn_rate = 0.1
 var score := 0
 var multiplier := 1
 var reversed := false
+var enemies_since_last_mothership := 0
 
 onready var camera = $camera
 onready var ship = $camera/ship
@@ -101,10 +102,22 @@ func spawn_enemy():
 	if len(columns) == 0:
 		return
 	var column = columns[randi() % len(columns)]
+	
+	var ship_type
+	if enemies_since_last_mothership < 10:
+		ship_type = 0
+	else:
+		ship_type = 1 if randf() < mothership_spawn_rate else 0
+	
+	if ship_type == 1:
+		enemies_since_last_mothership = 0
+	else:
+		enemies_since_last_mothership += 1
+	
 	enemy.position.x = ship_size.x + column * ship_size.x
 	enemy.position.y = camera.position.y - enemy.size.y
 	enemy.ship = ship
-	enemy.type = 1 if randf() < mothership_spawn_rate else 0
+	enemy.type = ship_type
 	enemy.column = column
 	enemy.connect("killed", self, "_on_enemy_killed")
 	add_child(enemy)
