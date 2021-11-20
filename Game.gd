@@ -102,7 +102,7 @@ func spawn_enemy():
 		return
 	var column = columns[randi() % len(columns)]
 	enemy.position.x = ship_size.x + column * ship_size.x
-	enemy.position.y = camera.position.y - enemy.get_node('sprite').texture.get_size().y
+	enemy.position.y = camera.position.y - enemy.size.y
 	enemy.ship = ship
 	enemy.type = 1 if randf() < mothership_spawn_rate else 0
 	enemy.column = column

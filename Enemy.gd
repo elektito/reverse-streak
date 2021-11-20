@@ -6,11 +6,18 @@ enum EnemyType { NORMAL_ENEMY, MOTHERSHIP }
 
 export(EnemyType) var type = EnemyType.NORMAL_ENEMY setget set_type, get_type
 
+var size := Vector2(32, 32)
+
 var ship
 var keep_y = false
 var column
 
 onready var sprite = $sprite
+
+
+func _ready():
+	set_type(type)
+
 
 func _on_Enemy_area_entered(area):
 	if area.is_in_group("bullets"):
@@ -23,7 +30,7 @@ func _physics_process(delta):
 	if ship and not ship.has_died and global_position.y >= ship.global_position.y and not keep_y:
 		$death_timer.start()
 		keep_y = true
-	elif ship.has_died and global_position.y >= ship.get_parent().get_parent().rect_size.y + sprite.texture.get_size().y:
+	elif ship.has_died and global_position.y >= ship.get_parent().get_parent().rect_size.y + size.y:
 		die()
 	
 	if keep_y and ship:
@@ -46,11 +53,13 @@ func die():
 
 func set_type(value: int):
 	type = value
-	var sprites := {
-		EnemyType.NORMAL_ENEMY: preload("res://assets/enemy1.png"),
-		EnemyType.MOTHERSHIP: preload("res://assets/enemy2.png"),
+	if sprite == null:
+		return
+	var animations := {
+		EnemyType.NORMAL_ENEMY: 'enemy1',
+		EnemyType.MOTHERSHIP: 'mothership',
 	}
-	$sprite.texture = sprites[type]
+	sprite.animation = animations[type]
 
 
 func get_type() -> int:

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/enemy2.png-40298ccdee36306df7910be750a1b14d.stex"
+path="res://.import/mothership.png-cf78d0dc0a2be6943da8cc1a54ed7a1c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/enemy2.png"
-dest_files=[ "res://.import/enemy2.png-40298ccdee36306df7910be750a1b14d.stex" ]
+source_file="res://assets/mothership.png"
+dest_files=[ "res://.import/mothership.png-cf78d0dc0a2be6943da8cc1a54ed7a1c.stex" ]
 
 [params]
 
