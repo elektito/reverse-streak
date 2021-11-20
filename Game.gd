@@ -59,15 +59,7 @@ func _on_enemy_spawn_timer_timeout():
 	enemy_spawn_rate = 1.0 / (nenemies + 4)
 	if randf() > enemy_spawn_rate:
 		return
-	var enemy = preload("res://Enemy.tscn").instance()
-	var columns = int(floor((rect_size.x - 2 * ship_size.x) / ship_size.x))
-	var column = randi() % columns
-	enemy.position.x = ship_size.x + column * ship_size.x
-	enemy.position.y = camera.position.y - enemy.get_node('sprite').texture.get_size().y
-	enemy.ship = ship
-	enemy.type = 1 if randf() < mothership_spawn_rate else 0
-	enemy.connect("killed", self, "_on_enemy_killed")
-	add_child(enemy)
+	spawn_enemy()
 
 
 func _on_enemy_killed(enemy):
@@ -91,3 +83,28 @@ func reverse_controls():
 		$ParallaxBackground/ParallaxLayer/Sprite.modulate = Color.red
 	else:
 		$ParallaxBackground/ParallaxLayer/Sprite.modulate = Color.white
+
+
+func spawn_enemy():
+	var enemy = preload("res://Enemy.tscn").instance()
+	var ncolumns = int(floor((rect_size.x - 2 * ship_size.x) / ship_size.x))
+	var columns = range(ncolumns)
+	var vertical_distance = VERTICAL_SPEED * enemy.get_node('death_timer').wait_time
+	var unfeasable_columns := []
+	for e in get_tree().get_nodes_in_group('enemies'):
+		if e.position.y > camera.position.y + vertical_distance:
+			continue
+		if not e.column in unfeasable_columns:
+			unfeasable_columns.append(e.column)
+	for c in unfeasable_columns:
+		columns.erase(c)
+	if len(columns) == 0:
+		return
+	var column = columns[randi() % len(columns)]
+	enemy.position.x = ship_size.x + column * ship_size.x
+	enemy.position.y = camera.position.y - enemy.get_node('sprite').texture.get_size().y
+	enemy.ship = ship
+	enemy.type = 1 if randf() < mothership_spawn_rate else 0
+	enemy.column = column
+	enemy.connect("killed", self, "_on_enemy_killed")
+	add_child(enemy)

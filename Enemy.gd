@@ -8,6 +8,7 @@ export(EnemyType) var type = EnemyType.NORMAL_ENEMY setget set_type, get_type
 
 var ship
 var keep_y = false
+var column
 
 onready var sprite = $sprite
 
