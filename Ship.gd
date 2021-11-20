@@ -60,6 +60,7 @@ func _on_Ship_area_entered(area):
 func die():
 	has_died = true
 	emit_signal("death_started")
+	$explosion_sound.play()
 	$sprite.visible = false
 	sprite_left.visible = false
 	sprite_right.visible = false
