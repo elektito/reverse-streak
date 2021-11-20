@@ -47,7 +47,6 @@ centered = false
 [node name="camera" type="Camera2D" parent="."]
 anchor_mode = 0
 current = true
-smoothing_enabled = true
 
 [node name="ship" parent="camera" instance=ExtResource( 2 )]
 
