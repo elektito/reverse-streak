@@ -61,6 +61,8 @@ func die():
 	has_died = true
 	emit_signal("death_started")
 	$sprite.visible = false
+	sprite_left.visible = false
+	sprite_right.visible = false
 	$explosion_disc.visible = true
 	$shape.set_deferred("disabled", true)
 	$trail_particles.visible = false
