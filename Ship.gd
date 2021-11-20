@@ -71,6 +71,6 @@ func die():
 	$explosion_disc.visible = true
 	yield(get_tree().create_timer(0.02), "timeout")
 	$explosion_disc.visible = false
-	yield(get_tree().create_timer($explosion_particles.lifetime * 8), "timeout")
+	yield(get_tree().create_timer($explosion_particles.lifetime * 4), "timeout")
 	emit_signal("died")
 	get_tree().reload_current_scene()
