@@ -89,6 +89,7 @@ margin_left = 30.0
 margin_top = 5.0
 margin_right = 265.0
 margin_bottom = 32.0
+mouse_filter = 0
 custom_fonts/font = SubResource( 1 )
 text = "0"
 align = 2
@@ -120,4 +121,5 @@ pause_screen = true
 [connection signal="death_started" from="camera/ship" to="." method="_on_ship_death_started"]
 [connection signal="died" from="camera/ship" to="." method="_on_ship_died"]
 [connection signal="timeout" from="enemy_spawn_timer" to="." method="_on_enemy_spawn_timer_timeout"]
+[connection signal="gui_input" from="hud/score_label" to="." method="_on_score_label_gui_input"]
 [connection signal="resume" from="menu/screen" to="." method="_on_menu_resume"]

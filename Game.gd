@@ -37,10 +37,7 @@ func _ready():
 
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("ui_cancel"):
-		enable_node($menu/screen, true)
-		$menu/screen.visible = true
-		get_tree().paused = true
-		$menu/screen.init()
+		open_menu()
 	
 	if event is InputEventScreenTouch:
 		var scrw = ProjectSettings.get('display/window/size/width')
@@ -130,6 +127,11 @@ func _process(delta):
 	reverse_badge.visible = reversed
 
 
+func _on_score_label_gui_input(event):
+	if event is InputEventScreenTouch and event.pressed:
+		open_menu()
+
+
 func reverse_controls():
 	reversed = not reversed
 	if reversed:
@@ -182,3 +184,10 @@ func enable_node(node: Node, value=false):
 	node.set_process_unhandled_input(value)
 	for child in node.get_children():
 		enable_node(child, value)
+
+
+func open_menu():
+	enable_node($menu/screen, true)
+	$menu/screen.visible = true
+	get_tree().paused = true
+	$menu/screen.init()
