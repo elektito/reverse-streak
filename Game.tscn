@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Game.gd" type="Script" id=1]
 [ext_resource path="res://Ship.tscn" type="PackedScene" id=2]
@@ -16,6 +16,13 @@ outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
 use_mipmaps = true
 use_filter = true
+font_data = ExtResource( 9 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 12
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+use_mipmaps = true
 font_data = ExtResource( 9 )
 
 [node name="Game" type="Control"]
@@ -84,6 +91,20 @@ margin_right = 265.0
 margin_bottom = 20.0
 custom_fonts/font = SubResource( 1 )
 text = "0"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="reverse_badge" type="Label" parent="hud"]
+visible = false
+margin_left = 192.0
+margin_top = 36.0
+margin_right = 266.0
+margin_bottom = 50.0
+custom_colors/font_color = Color( 0.992157, 1, 0, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "REV"
 align = 2
 __meta__ = {
 "_edit_use_anchors_": false

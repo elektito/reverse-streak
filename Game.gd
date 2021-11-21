@@ -14,6 +14,7 @@ onready var camera = $camera
 onready var ship = $camera/ship
 onready var score_label = $hud/score_label
 onready var shoot_sound = $shoot_sound
+onready var reverse_badge = $hud/reverse_badge
 
 onready var ship_size: Vector2 = ship.sprite.texture.get_size()
 
@@ -79,6 +80,8 @@ func _on_enemy_spawn_timer_timeout():
 
 
 func _on_enemy_killed(enemy):
+	if enemy.type == 1:
+		ship.indicate_reverse()
 	score += 1 * multiplier
 	if enemy.type == 1:
 		multiplier *= 2
@@ -103,6 +106,7 @@ func _on_menu_resume():
 
 func _process(delta):
 	score_label.text = str(score)
+	reverse_badge.visible = reversed
 
 
 func reverse_controls():

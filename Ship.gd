@@ -76,3 +76,19 @@ func die():
 	$explosion_disc.visible = false
 	yield(get_tree().create_timer($explosion_particles.lifetime * 4), "timeout")
 	emit_signal("died")
+
+
+func indicate_reverse():
+	var duration := 0.5
+	var prev_y = $reverse_flier.position.y
+	var prev_scale = $reverse_flier.scale
+	$reverse_flier.visible = true
+	$reverse_tween.interpolate_property($reverse_flier, "position:y", null, $reverse_flier.position.y - 10.0, duration, Tween.TRANS_SINE, Tween.EASE_IN)
+	$reverse_tween.interpolate_property($reverse_flier, "scale", null, $reverse_flier.scale * 6.0, duration, Tween.TRANS_SINE, Tween.EASE_IN)
+	$reverse_tween.interpolate_property($reverse_flier, "modulate:a", null, 0.0, duration, Tween.TRANS_SINE, Tween.EASE_IN)
+	$reverse_tween.start()
+	yield($reverse_tween, "tween_all_completed")
+	$reverse_flier.position.y = prev_y
+	$reverse_flier.modulate.a = 1.0
+	$reverse_flier.scale = prev_scale
+	$reverse_flier.visible = false
