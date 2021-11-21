@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Game.gd" type="Script" id=1]
 [ext_resource path="res://Ship.tscn" type="PackedScene" id=2]
@@ -8,6 +8,14 @@
 [ext_resource path="res://assets/shoot1.wav" type="AudioStream" id=6]
 [ext_resource path="res://assets/space-fighter-loop.ogg" type="AudioStream" id=7]
 [ext_resource path="res://ScreenShake.tscn" type="PackedScene" id=8]
+[ext_resource path="res://assets/Kenney Space.ttf" type="DynamicFontData" id=9]
+
+[sub_resource type="DynamicFont" id=1]
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 9 )
 
 [node name="Game" type="Control"]
 anchor_right = 1.0
@@ -71,6 +79,7 @@ margin_left = 191.0
 margin_top = 5.0
 margin_right = 265.0
 margin_bottom = 20.0
+custom_fonts/font = SubResource( 1 )
 text = "0"
 align = 2
 __meta__ = {
