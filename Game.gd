@@ -89,6 +89,12 @@ func _on_ship_death_started():
 	$camera/screen_shake.start(0.35, 60, 5)
 
 
+func _on_ship_died():
+	while get_tree().paused:
+		yield(get_tree().create_timer(1.0), "timeout")
+	get_tree().reload_current_scene()
+
+
 func _on_menu_resume():
 	get_tree().paused = false
 	$menu/screen.visible = false

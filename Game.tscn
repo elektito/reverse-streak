@@ -97,5 +97,6 @@ visible = false
 pause_screen = true
 
 [connection signal="death_started" from="camera/ship" to="." method="_on_ship_death_started"]
+[connection signal="died" from="camera/ship" to="." method="_on_ship_died"]
 [connection signal="timeout" from="enemy_spawn_timer" to="." method="_on_enemy_spawn_timer_timeout"]
 [connection signal="resume" from="menu/screen" to="." method="_on_menu_resume"]
