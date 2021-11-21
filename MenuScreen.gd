@@ -48,6 +48,11 @@ var menu = [
 var items := []
 var current_menu: Control
 
+func _input(event):
+	if Input.is_action_just_pressed("ui_cancel"):
+		go_to_parent_menu()
+
+
 func _ready():
 	create_menu(menu, $center)
 	current_menu = $center
