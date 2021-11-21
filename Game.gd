@@ -38,7 +38,9 @@ func _ready():
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("ui_cancel"):
 		open_menu()
-	
+
+
+func _input(event):
 	if event is InputEventScreenTouch:
 		var scrw = ProjectSettings.get('display/window/size/width')
 		if event.pressed:
