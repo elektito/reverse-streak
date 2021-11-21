@@ -105,7 +105,7 @@ func _on_menu_resume():
 
 
 func _process(delta):
-	score_label.text = str(score)
+	score_label.text = str(score) + ('' if multiplier == 1 else ' (x' + str(multiplier) + ')')
 	reverse_badge.visible = reversed
 
 
