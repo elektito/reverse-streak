@@ -78,6 +78,8 @@ func create_menu(menu, parent):
 			item.focus_neighbour_top = prev.get_path()
 		else:
 			first = item
+		item.focus_neighbour_right = item.get_path()
+		item.focus_neighbour_left = item.get_path()
 		prev = item
 	
 	if prev and prev != first:
