@@ -53,6 +53,7 @@ func create_menu(menu, parent):
 			first = item
 		item.focus_neighbour_right = item.get_path()
 		item.focus_neighbour_left = item.get_path()
+		item.connect("focus_entered", self, '_on_item_focus_entered')
 		prev = item
 	
 	if prev and prev != first:
@@ -187,3 +188,7 @@ func go_to_parent_menu():
 	else:
 		current_menu.get_meta('first').grab_focus()
 	return true
+
+
+func _on_item_focus_entered():
+	$select_sound.play()

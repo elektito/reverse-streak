@@ -1,11 +1,15 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
+[ext_resource path="res://assets/menu-select.wav" type="AudioStream" id=1]
 [ext_resource path="res://MenuScreen.gd" type="Script" id=2]
 
 [node name="MenuScreen" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="center" type="CenterContainer" parent="."]
 margin_bottom = 480.0
@@ -15,3 +19,7 @@ margin_top = 240.0
 margin_bottom = 240.0
 
 [node name="transition_tween" type="Tween" parent="."]
+
+[node name="select_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+bus = "SFX"
