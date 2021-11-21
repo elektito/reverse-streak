@@ -172,6 +172,7 @@ func _on_button_clicked(desc: Dictionary, btn: Button):
 		$transition_tween.interpolate_property(submenu, "rect_position:x", submenu.rect_position.x, submenu.rect_position.x - scrw, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 		$transition_tween.start()
 		yield($transition_tween, "tween_all_completed")
+		current_menu.set_meta('last_focus', get_focus_owner())
 		current_menu = submenu
 		current_menu.get_meta('first').grab_focus()
 	elif desc['type'] == 'back':
@@ -206,4 +207,8 @@ func go_to_parent_menu():
 	$transition_tween.start()
 	yield($transition_tween, "tween_all_completed")
 	current_menu = parent_menu
-	current_menu.get_meta('first').grab_focus()
+	var last_focus = current_menu.get_meta('last_focus')
+	if last_focus:
+		last_focus.grab_focus()
+	else:
+		current_menu.get_meta('first').grab_focus()
