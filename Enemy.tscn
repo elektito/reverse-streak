@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/enemy1-sheet.png" type="Texture" id=1]
 [ext_resource path="res://Enemy.gd" type="Script" id=2]
 [ext_resource path="res://assets/enemy-explosion.wav" type="AudioStream" id=3]
 [ext_resource path="res://assets/mothership.png" type="Texture" id=4]
+[ext_resource path="res://assets/explosion-disc.png" type="Texture" id=5]
 
 [sub_resource type="AtlasTexture" id=7]
 atlas = ExtResource( 1 )
@@ -57,6 +58,12 @@ one_shot = true
 [node name="death_sound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
 bus = "SFX"
+
+[node name="explosion_disc" type="Sprite" parent="."]
+visible = false
+modulate = Color( 0.25098, 0.25098, 0.25098, 0.25098 )
+scale = Vector2( 0.33, 0.33 )
+texture = ExtResource( 5 )
 
 [connection signal="area_entered" from="." to="." method="_on_Enemy_area_entered"]
 [connection signal="timeout" from="death_timer" to="." method="_on_death_timer_timeout"]

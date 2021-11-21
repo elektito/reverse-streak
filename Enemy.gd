@@ -43,11 +43,19 @@ func _on_death_timer_timeout():
 
 func die():
 	$death_sound.play()
-	visible = false
 	$shape.set_deferred("disabled", false)
 	set_deferred("monitorable", false)
 	set_deferred("monitoring", false)
-	yield($death_sound, "finished")
+	$sprite.visible = false
+	$explosion_disc.visible = true
+	$shape.set_deferred("disabled", true)
+	yield(get_tree().create_timer(0.02), "timeout")
+	$explosion_disc.visible = false
+	yield(get_tree().create_timer(0.02), "timeout")
+	$explosion_disc.visible = true
+	yield(get_tree().create_timer(0.02), "timeout")
+	$explosion_disc.visible = false
+	yield(get_tree().create_timer(1.0), "timeout")
 	queue_free()
 
 
