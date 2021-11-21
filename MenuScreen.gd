@@ -5,45 +5,7 @@ signal slider_value_changed(name, value)
 
 var transition_time := 0.3
 
-var menu = [
-	{
-		'name': 'new_game',
-		'type': 'button',
-		'title': 'New Game',
-	},
-	{
-		'name': 'settings',
-		'type': 'submenu',
-		'title': 'Settings',
-		'menu': [
-			{
-				'name': 'master_volume',
-				'type': 'slider',
-				'title': 'Master',
-			},
-			{
-				'name': 'sfx_volume',
-				'type': 'slider',
-				'title': 'SFX',
-			},
-			{
-				'name': 'music_volume',
-				'type': 'slider',
-				'title': 'Music',
-			},
-			{
-				'name': 'settings_back',
-				'type': 'back',
-				'title': 'Back',
-			}
-		]
-	},
-	{
-		'name': 'exit',
-		'type': 'button',
-		'title': 'Exit',
-	},
-]
+var menu
 
 var items := []
 var current_menu: Control
@@ -54,8 +16,9 @@ func _input(event):
 
 
 func _ready():
-	create_menu(menu, $center)
-	current_menu = $center
+	if menu:
+		create_menu(menu, $center)
+		current_menu = $center
 
 
 func create_menu(menu, parent):
@@ -151,6 +114,7 @@ func add_slider(desc, parent: Control) -> HSlider:
 	slider.max_value = 1.0
 	slider.step = 0.05
 	slider.tick_count = 10
+	slider.value = desc.get('value', 0.0)
 	slider.size_flags_horizontal = SIZE_EXPAND_FILL
 	slider.rect_min_size.x = 100
 	slider.ticks_on_borders = true

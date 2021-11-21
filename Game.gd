@@ -29,6 +29,11 @@ func _ready():
 	$enemy_spawn_timer.start(row_scroll_time)
 
 
+func _unhandled_input(event):
+	if Input.is_action_just_pressed("ui_cancel"):
+		get_tree().change_scene("res://MainMenu.tscn")
+
+
 func _physics_process(delta):
 	camera.position.y -= VERTICAL_SPEED * delta
 	if ship.has_died:
