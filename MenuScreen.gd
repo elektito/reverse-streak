@@ -12,7 +12,8 @@ var current_menu: Control
 
 func _input(event):
 	if Input.is_action_just_pressed("ui_cancel"):
-		go_to_parent_menu()
+		if go_to_parent_menu():
+			get_tree().set_input_as_handled()
 
 
 func _ready():
@@ -173,7 +174,7 @@ func _on_slider_focus_exited(slider: HSlider, label: Label):
 func go_to_parent_menu():
 	var parent_menu = current_menu.get_meta('parent_menu')
 	if parent_menu == null:
-		return
+		return false
 	var scrw = ProjectSettings.get('display/window/size/width')
 	$transition_tween.interpolate_property(current_menu, "rect_position:x", current_menu.rect_position.x, current_menu.rect_position.x + scrw, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	$transition_tween.interpolate_property(parent_menu, "rect_position:x", parent_menu.rect_position.x, parent_menu.rect_position.x + scrw, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
@@ -185,3 +186,4 @@ func go_to_parent_menu():
 		last_focus.grab_focus()
 	else:
 		current_menu.get_meta('first').grab_focus()
+	return true

@@ -74,7 +74,7 @@ func get_menu():
 	]
 
 
-func _input(event):
+func _unhandled_input(event):
 	if pause_screen and Input.is_action_just_pressed("ui_cancel"):
 		emit_signal("resume")
 		get_tree().set_input_as_handled()
