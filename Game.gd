@@ -9,6 +9,9 @@ var score := 0
 var multiplier := 1
 var reversed := false
 var enemies_since_last_mothership := 0
+var left_touches := []
+var right_touches := []
+var shoot_for_touch := false
 
 onready var camera = $camera
 onready var ship = $camera/ship
@@ -38,6 +41,23 @@ func _unhandled_input(event):
 		$menu/screen.visible = true
 		get_tree().paused = true
 		$menu/screen.init()
+	
+	if event is InputEventScreenTouch:
+		var scrw = ProjectSettings.get('display/window/size/width')
+		if event.pressed:
+			if event.position.x < scrw / 4:
+				if not event.index in left_touches:
+					left_touches.append(event.index)
+			elif event.position.x > scrw * 3 / 4:
+				if not event.index in right_touches:
+					right_touches.append(event.index)
+			else:
+				shoot_for_touch = true
+		else:
+			if event.index in left_touches:
+				left_touches.erase(event.index)
+			elif event.index in right_touches:
+				right_touches.erase(event.index)
 
 
 func _physics_process(delta):
@@ -46,9 +66,9 @@ func _physics_process(delta):
 		return
 	
 	var dir = Vector2.ZERO
-	if Input.is_action_pressed("left"):
+	if Input.is_action_pressed("left") or left_touches:
 		dir = Vector2.LEFT
-	elif Input.is_action_pressed("right"):
+	elif Input.is_action_pressed("right") or right_touches:
 		dir = Vector2.RIGHT
 	
 	if reversed:
@@ -56,13 +76,14 @@ func _physics_process(delta):
 	
 	ship.position += dir * HORIZONTAL_SPEED * delta
 	
-	if Input.is_action_just_pressed("shoot"):
+	if Input.is_action_just_pressed("shoot") or shoot_for_touch:
 		var bullet = preload("res://Bullet.tscn").instance()
 		bullet.position.x = ship.position.x
 		bullet.position.y = ship.position.y - 2
 		bullet.direction = Vector2.UP
 		camera.add_child(bullet)
 		shoot_sound.play()
+		shoot_for_touch = false
 	
 	if Input.is_action_just_pressed("screenshot"):
 		var image = get_viewport().get_texture().get_data()
