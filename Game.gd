@@ -52,6 +52,11 @@ func _physics_process(delta):
 		bullet.direction = Vector2.UP
 		camera.add_child(bullet)
 		shoot_sound.play()
+	
+	if Input.is_action_just_pressed("screenshot"):
+		var image = get_viewport().get_texture().get_data()
+		image.flip_y()
+		image.save_png("screenshot.png")
 
 
 func _on_enemy_spawn_timer_timeout():
