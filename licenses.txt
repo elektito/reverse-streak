@@ -5,3 +5,7 @@ License: https://filmmusic.io/standard-license
 ====
 
 Kenney Space font - kenney.nl - CC0
+
+====
+
+Sound effects created using: https://jfxr.frozenfractal.com/
