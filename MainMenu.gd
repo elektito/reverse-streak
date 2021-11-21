@@ -1,12 +1,36 @@
-extends Control
+extends PanelContainer
+
+signal resume()
+
+export(bool) var pause_screen := false
 
 var master_bus = AudioServer.get_bus_index('Master')
 var sfx_bus = AudioServer.get_bus_index('SFX')
 var music_bus = AudioServer.get_bus_index('Music')
 
+var menu_screen
+
 func _ready():
-	var menu_screen = preload("res://MenuScreen.tscn").instance()
-	menu_screen.menu = [
+	menu_screen = preload("res://MenuScreen.tscn").instance()
+	menu_screen.menu = get_menu()
+	add_child(menu_screen)
+	menu_screen.connect("button_clicked", self, "_on_menu_button_pressed")
+	menu_screen.connect("slider_value_changed", self, "_on_menu_slider_value_changed")
+
+
+func init():
+	menu_screen.menu = get_menu()
+	menu_screen.init_menu()
+
+
+func get_menu():
+	return [
+		{
+			'name': 'resume_game',
+			'type': 'button',
+			'title': 'Resume Game',
+			'visible': pause_screen,
+		},
 		{
 			'name': 'new_game',
 			'type': 'button',
@@ -48,14 +72,20 @@ func _ready():
 			'title': 'Exit',
 		},
 	]
-	add_child(menu_screen)
-	menu_screen.connect("button_clicked", self, "_on_menu_button_pressed")
-	menu_screen.connect("slider_value_changed", self, "_on_menu_slider_value_changed")
+
+
+func _input(event):
+	if pause_screen and Input.is_action_just_pressed("ui_cancel"):
+		emit_signal("resume")
+		get_tree().set_input_as_handled()
 
 
 func _on_menu_button_pressed(name: String):
 	match name:
+		'resume_game':
+			emit_signal("resume")
 		'new_game':
+			get_tree().paused = false
 			get_tree().change_scene("res://Game.tscn")
 		'exit':
 			get_tree().quit()

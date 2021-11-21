@@ -18,6 +18,8 @@ onready var shoot_sound = $shoot_sound
 onready var ship_size: Vector2 = ship.sprite.texture.get_size()
 
 func _ready():
+	enable_node($menu/screen, false)
+	
 	ship.position.x = rect_size.x / 2 - ship.size.x / 2
 	ship.position.y = rect_size.y - 80
 	
@@ -31,7 +33,10 @@ func _ready():
 
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("ui_cancel"):
-		get_tree().change_scene("res://MainMenu.tscn")
+		enable_node($menu/screen, true)
+		$menu/screen.visible = true
+		get_tree().paused = true
+		$menu/screen.init()
 
 
 func _physics_process(delta):
@@ -84,6 +89,12 @@ func _on_ship_death_started():
 	$camera/screen_shake.start(0.35, 60, 5)
 
 
+func _on_menu_resume():
+	get_tree().paused = false
+	$menu/screen.visible = false
+	enable_node($menu/screen, false)
+
+
 func _process(delta):
 	score_label.text = str(score)
 
@@ -131,3 +142,12 @@ func spawn_enemy():
 	enemy.column = column
 	enemy.connect("killed", self, "_on_enemy_killed")
 	add_child(enemy)
+
+
+func enable_node(node: Node, value=false):
+	node.set_process(value)
+	node.set_physics_process(value)
+	node.set_process_input(value)
+	node.set_process_unhandled_input(value)
+	for child in node.get_children():
+		enable_node(child, value)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Game.gd" type="Script" id=1]
 [ext_resource path="res://Ship.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://assets/space-fighter-loop.ogg" type="AudioStream" id=7]
 [ext_resource path="res://ScreenShake.tscn" type="PackedScene" id=8]
 [ext_resource path="res://assets/Kenney Space.ttf" type="DynamicFontData" id=9]
+[ext_resource path="res://MainMenu.tscn" type="PackedScene" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 outline_size = 2
@@ -69,8 +70,10 @@ stream = ExtResource( 6 )
 bus = "SFX"
 
 [node name="music" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
 stream = ExtResource( 7 )
 autoplay = true
+bus = "Music"
 
 [node name="hud" type="CanvasLayer" parent="."]
 
@@ -86,5 +89,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="menu" type="CanvasLayer" parent="."]
+
+[node name="screen" parent="menu" instance=ExtResource( 10 )]
+pause_mode = 2
+visible = false
+pause_screen = true
+
 [connection signal="death_started" from="camera/ship" to="." method="_on_ship_death_started"]
 [connection signal="timeout" from="enemy_spawn_timer" to="." method="_on_enemy_spawn_timer_timeout"]
+[connection signal="resume" from="menu/screen" to="." method="_on_menu_resume"]

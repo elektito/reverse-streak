@@ -16,6 +16,13 @@ func _input(event):
 
 
 func _ready():
+	init_menu()
+
+
+func init_menu():
+	for child in get_children():
+		if child != $center and child is Control:
+			child.queue_free()
 	if menu:
 		create_menu(menu, $center)
 		current_menu = $center
@@ -32,6 +39,8 @@ func create_menu(menu, parent):
 	var first: Control = null
 	var prev: Control = null
 	for desc in menu:
+		if not desc.get('visible', true):
+			continue
 		var factory = 'add_' + desc['type']
 		var item: Control = call(factory, desc, parent)
 		if prev:
