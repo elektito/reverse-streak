@@ -4,6 +4,7 @@ signal button_clicked(name)
 signal slider_value_changed(name, value)
 
 var transition_time := 0.3
+var scrw = ProjectSettings.get('display/window/size/width')
 
 var menu
 
@@ -142,7 +143,6 @@ func add_slider(desc, parent: Control) -> HSlider:
 func _on_button_clicked(desc: Dictionary, btn: Button):
 	if desc['type'] == 'submenu':
 		var submenu = btn.get_meta('menu_container')
-		var scrw = ProjectSettings.get('display/window/size/width')
 		$transition_tween.interpolate_property(current_menu, "rect_position:x", current_menu.rect_position.x, current_menu.rect_position.x - scrw, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 		$transition_tween.interpolate_property(submenu, "rect_position:x", submenu.rect_position.x, submenu.rect_position.x - scrw, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 		$transition_tween.start()
