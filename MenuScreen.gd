@@ -89,7 +89,7 @@ func add_submenu(desc, parent: Control) -> Button:
 	var menu_container: CenterContainer = parent.duplicate()
 	add_child(menu_container)
 	create_menu(desc['menu'], menu_container)
-	menu_container.rect_position.x = rect_size.x
+	menu_container.rect_position.x = rect_position.x + rect_size.x
 	btn.set_meta('menu_container', menu_container)
 	menu_container.set_meta('parent_menu', parent)
 	
