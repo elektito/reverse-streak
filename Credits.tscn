@@ -12,12 +12,12 @@ __meta__ = {
 }
 
 [node name="title_label" type="Label" parent="."]
-margin_left = 77.0
-margin_top = 31.0
-margin_right = 197.0
-margin_bottom = 58.0
+margin_left = 11.0
+margin_top = 26.0
+margin_right = 264.0
+margin_bottom = 53.0
 theme = ExtResource( 2 )
-text = "CREDITS"
+text = "Reverse Streak"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -28,7 +28,7 @@ margin_top = 95.0
 margin_right = 258.0
 margin_bottom = 332.0
 theme = ExtResource( 2 )
-text = "Made by
+text = "A Game by
 Mostafa Razavi
 (elektito)
 
