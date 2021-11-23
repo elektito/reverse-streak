@@ -10,8 +10,11 @@ var menu
 
 var items := []
 var current_menu: Control
+var menu_disabled := false
 
 func _input(event):
+	if menu_disabled:
+		return
 	if Input.is_action_just_pressed("ui_cancel"):
 		if go_to_parent_menu():
 			get_tree().set_input_as_handled()
@@ -141,12 +144,16 @@ func add_slider(desc, parent: Control) -> HSlider:
 
 
 func _on_button_clicked(desc: Dictionary, btn: Button):
+	if menu_disabled:
+		return
 	if desc['type'] == 'submenu':
 		var submenu = btn.get_meta('menu_container')
+		menu_disabled = true
 		$transition_tween.interpolate_property(current_menu, "rect_position:x", current_menu.rect_position.x, current_menu.rect_position.x - scrw, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 		$transition_tween.interpolate_property(submenu, "rect_position:x", submenu.rect_position.x, submenu.rect_position.x - scrw, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 		$transition_tween.start()
 		yield($transition_tween, "tween_all_completed")
+		menu_disabled = false
 		current_menu.set_meta('last_focus', get_focus_owner())
 		current_menu = submenu
 		current_menu.get_meta('first').grab_focus()
@@ -173,6 +180,8 @@ func _on_slider_focus_exited(slider: HSlider, label: Label):
 
 
 func go_to_parent_menu():
+	if menu_disabled:
+		return
 	var parent_menu = current_menu.get_meta('parent_menu')
 	if parent_menu == null:
 		return false
@@ -181,10 +190,12 @@ func go_to_parent_menu():
 		last_focus.grab_focus()
 	else:
 		parent_menu.get_meta('first').grab_focus()
+	menu_disabled = true
 	$transition_tween.interpolate_property(current_menu, "rect_position:x", current_menu.rect_position.x, current_menu.rect_position.x + scrw, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	$transition_tween.interpolate_property(parent_menu, "rect_position:x", parent_menu.rect_position.x, parent_menu.rect_position.x + scrw, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	$transition_tween.start()
 	yield($transition_tween, "tween_all_completed")
+	menu_disabled = false
 	current_menu = parent_menu
 	return true
 
