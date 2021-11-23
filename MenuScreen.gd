@@ -143,6 +143,24 @@ func add_slider(desc, parent: Control) -> HSlider:
 	return slider
 
 
+func add_scene(desc: Dictionary, parent: Control) -> Button:
+	var btn := Button.new()
+	btn.name = desc['name']
+	btn.text = desc['title']
+	btn.theme = preload("res://Theme.tres")
+	btn.connect("pressed", self, "_on_button_clicked", [desc, btn])
+	parent.get_node('vbox').add_child(btn)
+	
+	var scene = load(desc['scene']).instance()
+	add_child(scene)
+	scene.menu_screen = self
+	scene.rect_position.x = rect_position.x + rect_size.x
+	btn.set_meta('subscene', scene)
+	scene.set_meta('parent_menu', parent)
+	
+	return btn
+
+
 func _on_button_clicked(desc: Dictionary, btn: Button):
 	if menu_disabled:
 		return
@@ -157,6 +175,18 @@ func _on_button_clicked(desc: Dictionary, btn: Button):
 		current_menu.set_meta('last_focus', get_focus_owner())
 		current_menu = submenu
 		current_menu.get_meta('first').grab_focus()
+	elif desc['type'] == 'scene':
+		var subscene = btn.get_meta('subscene')
+		menu_disabled = true
+		$transition_tween.interpolate_property(current_menu, "rect_position:x", current_menu.rect_position.x, current_menu.rect_position.x - scrw, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
+		$transition_tween.interpolate_property(subscene, "rect_position:x", subscene.rect_position.x, subscene.rect_position.x - scrw, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
+		$transition_tween.start()
+		yield($transition_tween, "tween_all_completed")
+		menu_disabled = false
+		current_menu.set_meta('last_focus', get_focus_owner())
+		current_menu = subscene
+		if subscene.first_focus:
+			subscene.first_focus.grab_focus()
 	elif desc['type'] == 'back':
 		go_to_parent_menu()
 	else:
