@@ -96,7 +96,7 @@ func add_submenu(desc, parent: Control) -> Button:
 
 
 func add_back(desc, parent: Control) -> Button:
-	var  btn := Button.new()
+	var btn := Button.new()
 	btn.name = desc['name']
 	btn.text = desc['title']
 	btn.theme = preload("res://Theme.tres")
