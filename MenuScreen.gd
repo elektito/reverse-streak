@@ -7,6 +7,7 @@ enum TransitionDirection { LEFT, RIGHT }
 
 var transition_time := 0.3
 var scrw = ProjectSettings.get('display/window/size/width')
+var scrh = ProjectSettings.get('display/window/size/height')
 
 var menu
 
@@ -36,8 +37,8 @@ func init_menu():
 
 
 func create_menu(menu, parent):
-	parent.rect_min_size.x = ProjectSettings.get('display/window/size/width')
-	parent.rect_min_size.y = ProjectSettings.get('display/window/size/height')
+	parent.rect_min_size.x = scrw
+	parent.rect_min_size.y = scrh
 	
 	var vbox: VBoxContainer = parent.get_node('vbox')
 	for child in vbox.get_children():
