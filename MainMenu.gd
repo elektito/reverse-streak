@@ -67,6 +67,12 @@ func get_menu():
 			]
 		},
 		{
+			'name': 'credits',
+			'type': 'scene',
+			'title': 'Credits',
+			'scene': 'res://Credits.tscn',
+		},
+		{
 			'name': 'exit',
 			'type': 'button',
 			'title': 'Exit',
