@@ -176,17 +176,16 @@ func go_to_parent_menu():
 	var parent_menu = current_menu.get_meta('parent_menu')
 	if parent_menu == null:
 		return false
-	var scrw = ProjectSettings.get('display/window/size/width')
+	var last_focus = parent_menu.get_meta('last_focus')
+	if last_focus:
+		last_focus.grab_focus()
+	else:
+		parent_menu.get_meta('first').grab_focus()
 	$transition_tween.interpolate_property(current_menu, "rect_position:x", current_menu.rect_position.x, current_menu.rect_position.x + scrw, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	$transition_tween.interpolate_property(parent_menu, "rect_position:x", parent_menu.rect_position.x, parent_menu.rect_position.x + scrw, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	$transition_tween.start()
 	yield($transition_tween, "tween_all_completed")
 	current_menu = parent_menu
-	var last_focus = current_menu.get_meta('last_focus')
-	if last_focus:
-		last_focus.grab_focus()
-	else:
-		current_menu.get_meta('first').grab_focus()
 	return true
 
 
