@@ -3,6 +3,8 @@ extends Control
 signal button_clicked(name)
 signal slider_value_changed(name, value)
 
+enum TransitionDirection { LEFT, RIGHT }
+
 var transition_time := 0.3
 var scrw = ProjectSettings.get('display/window/size/width')
 
@@ -166,23 +168,13 @@ func _on_button_clicked(desc: Dictionary, btn: Button):
 		return
 	if desc['type'] == 'submenu':
 		var submenu = btn.get_meta('menu_container')
-		menu_disabled = true
-		$transition_tween.interpolate_property(current_menu, "rect_position:x", current_menu.rect_position.x, current_menu.rect_position.x - scrw, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
-		$transition_tween.interpolate_property(submenu, "rect_position:x", submenu.rect_position.x, submenu.rect_position.x - scrw, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
-		$transition_tween.start()
-		yield($transition_tween, "tween_all_completed")
-		menu_disabled = false
+		transition(TransitionDirection.RIGHT, submenu)
 		current_menu.set_meta('last_focus', get_focus_owner())
 		current_menu = submenu
 		current_menu.get_meta('first').grab_focus()
 	elif desc['type'] == 'scene':
 		var subscene = btn.get_meta('subscene')
-		menu_disabled = true
-		$transition_tween.interpolate_property(current_menu, "rect_position:x", current_menu.rect_position.x, current_menu.rect_position.x - scrw, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
-		$transition_tween.interpolate_property(subscene, "rect_position:x", subscene.rect_position.x, subscene.rect_position.x - scrw, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
-		$transition_tween.start()
-		yield($transition_tween, "tween_all_completed")
-		menu_disabled = false
+		transition(TransitionDirection.RIGHT, subscene)
 		current_menu.set_meta('last_focus', get_focus_owner())
 		current_menu = subscene
 		if subscene.first_focus:
@@ -220,14 +212,26 @@ func go_to_parent_menu():
 		last_focus.grab_focus()
 	else:
 		parent_menu.get_meta('first').grab_focus()
+	transition(TransitionDirection.LEFT, parent_menu)
+	current_menu = parent_menu
+	return true
+
+
+func transition(direction: int, other_menu):
+	var current_menu_target_x: float
+	var other_menu_target_x: float
+	if direction == TransitionDirection.LEFT:
+		current_menu_target_x = current_menu.rect_position.x + scrw
+		other_menu_target_x = other_menu.rect_position.x + scrw
+	else:
+		current_menu_target_x = current_menu.rect_position.x - scrw
+		other_menu_target_x = other_menu.rect_position.x - scrw
 	menu_disabled = true
-	$transition_tween.interpolate_property(current_menu, "rect_position:x", current_menu.rect_position.x, current_menu.rect_position.x + scrw, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
-	$transition_tween.interpolate_property(parent_menu, "rect_position:x", parent_menu.rect_position.x, parent_menu.rect_position.x + scrw, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	$transition_tween.interpolate_property(current_menu, "rect_position:x", null, current_menu_target_x, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	$transition_tween.interpolate_property(other_menu, "rect_position:x", null, other_menu_target_x, transition_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	$transition_tween.start()
 	yield($transition_tween, "tween_all_completed")
 	menu_disabled = false
-	current_menu = parent_menu
-	return true
 
 
 func _on_item_focus_entered():
