@@ -85,20 +85,9 @@ func add_button(desc, parent: Control) -> Button:
 
 
 func add_submenu(desc, parent: Control) -> Button:
-	var btn := Button.new()
-	btn.name = desc['name']
-	btn.text = desc['title']
-	btn.theme = preload("res://Theme.tres")
-	btn.connect("pressed", self, "_on_button_clicked", [desc, btn])
-	parent.get_node('vbox').add_child(btn)
-	
-	var menu_container: CenterContainer = parent.duplicate()
-	add_child(menu_container)
-	create_menu(desc['menu'], menu_container)
-	menu_container.rect_position.x = rect_position.x + rect_size.x
-	btn.set_meta('menu_container', menu_container)
-	menu_container.set_meta('parent_menu', parent)
-	
+	var submenu := parent.duplicate()
+	var btn := _add_subscreen(desc, parent, submenu)
+	create_menu(desc['menu'], submenu)
 	return btn
 
 
@@ -147,6 +136,12 @@ func add_slider(desc, parent: Control) -> HSlider:
 
 
 func add_scene(desc: Dictionary, parent: Control) -> Button:
+	var scene = load(desc['scene']).instance()
+	scene.set_meta('menu_screen', self)
+	return _add_subscreen(desc, parent, scene)
+
+
+func _add_subscreen(desc, parent: Control, screen: Control) -> Button:
 	var btn := Button.new()
 	btn.name = desc['name']
 	btn.text = desc['title']
@@ -154,12 +149,10 @@ func add_scene(desc: Dictionary, parent: Control) -> Button:
 	btn.connect("pressed", self, "_on_button_clicked", [desc, btn])
 	parent.get_node('vbox').add_child(btn)
 	
-	var scene = load(desc['scene']).instance()
-	add_child(scene)
-	scene.menu_screen = self
-	scene.rect_position.x = rect_position.x + rect_size.x
-	btn.set_meta('subscene', scene)
-	scene.set_meta('parent_menu', parent)
+	add_child(screen)
+	screen.rect_position.x = rect_position.x + rect_size.x
+	btn.set_meta('subscreen', screen)
+	screen.set_meta('parent_menu', parent)
 	
 	return btn
 
@@ -168,13 +161,13 @@ func _on_button_clicked(desc: Dictionary, btn: Button):
 	if menu_disabled:
 		return
 	if desc['type'] == 'submenu':
-		var submenu = btn.get_meta('menu_container')
+		var submenu = btn.get_meta('subscreen')
 		transition(TransitionDirection.RIGHT, submenu)
 		current_menu.set_meta('last_focus', get_focus_owner())
 		current_menu = submenu
 		current_menu.get_meta('first').grab_focus()
 	elif desc['type'] == 'scene':
-		var subscene = btn.get_meta('subscene')
+		var subscene = btn.get_meta('subscreen')
 		transition(TransitionDirection.RIGHT, subscene)
 		current_menu.set_meta('last_focus', get_focus_owner())
 		current_menu = subscene
