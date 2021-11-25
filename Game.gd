@@ -115,6 +115,7 @@ func _on_ship_death_started():
 func _on_ship_died():
 	while get_tree().paused:
 		yield(get_tree().create_timer(1.0), "timeout")
+	Global.add_highscore(score)
 	get_tree().reload_current_scene()
 
 

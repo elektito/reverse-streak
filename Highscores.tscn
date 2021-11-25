@@ -1,0 +1,62 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Theme.tres" type="Theme" id=1]
+[ext_resource path="res://Highscores.gd" type="Script" id=2]
+
+[node name="Highscores" type="CenterContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="vbox" type="VBoxContainer" parent="."]
+margin_left = 12.0
+margin_top = 163.0
+margin_right = 258.0
+margin_bottom = 316.0
+
+[node name="margin" type="MarginContainer" parent="vbox"]
+margin_right = 246.0
+margin_bottom = 59.0
+custom_constants/margin_bottom = 32
+
+[node name="label" type="Label" parent="vbox/margin"]
+margin_right = 246.0
+margin_bottom = 27.0
+theme = ExtResource( 1 )
+text = "HIGH SCORES"
+align = 1
+
+[node name="scores" type="VBoxContainer" parent="vbox"]
+margin_top = 63.0
+margin_right = 246.0
+margin_bottom = 90.0
+
+[node name="Label" type="Label" parent="vbox/scores"]
+margin_right = 246.0
+margin_bottom = 27.0
+theme = ExtResource( 1 )
+text = "-- no scores --"
+align = 1
+
+[node name="back" type="CenterContainer" parent="vbox"]
+margin_top = 94.0
+margin_right = 246.0
+margin_bottom = 153.0
+
+[node name="margin" type="MarginContainer" parent="vbox/back"]
+margin_left = 85.0
+margin_right = 161.0
+margin_bottom = 59.0
+custom_constants/margin_top = 32
+
+[node name="btn" type="Button" parent="vbox/back/margin"]
+margin_top = 32.0
+margin_right = 76.0
+margin_bottom = 59.0
+theme = ExtResource( 1 )
+text = "Back"
+
+[connection signal="pressed" from="vbox/back/margin/btn" to="." method="_on_back_btn_pressed"]

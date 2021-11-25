@@ -67,6 +67,12 @@ func get_menu():
 			]
 		},
 		{
+			'name': 'highscores',
+			'type': 'scene',
+			'title': 'High Scores',
+			'scene': 'res://Highscores.tscn',
+		},
+		{
 			'name': 'credits',
 			'type': 'scene',
 			'title': 'Credits',
