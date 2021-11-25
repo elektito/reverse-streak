@@ -92,6 +92,7 @@ func _on_menu_button_pressed(name: String):
 			emit_signal("resume")
 		'new_game':
 			get_tree().paused = false
+			Global.music.play()
 			get_tree().change_scene("res://Game.tscn")
 		'exit':
 			get_tree().quit()

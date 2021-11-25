@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Game.gd" type="Script" id=1]
 [ext_resource path="res://Ship.tscn" type="PackedScene" id=2]
@@ -6,7 +6,6 @@
 [ext_resource path="res://assets/bg3.png" type="Texture" id=4]
 [ext_resource path="res://assets/bg2.png" type="Texture" id=5]
 [ext_resource path="res://assets/shoot1.wav" type="AudioStream" id=6]
-[ext_resource path="res://assets/space-fighter-loop.ogg" type="AudioStream" id=7]
 [ext_resource path="res://ScreenShake.tscn" type="PackedScene" id=8]
 [ext_resource path="res://assets/Kenney Space.ttf" type="DynamicFontData" id=9]
 [ext_resource path="res://MainMenu.tscn" type="PackedScene" id=10]
@@ -75,12 +74,6 @@ autostart = true
 [node name="shoot_sound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
 bus = "SFX"
-
-[node name="music" type="AudioStreamPlayer" parent="."]
-pause_mode = 2
-stream = ExtResource( 7 )
-autoplay = true
-bus = "Music"
 
 [node name="hud" type="CanvasLayer" parent="."]
 
