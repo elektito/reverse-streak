@@ -82,6 +82,7 @@ func get_menu():
 			'name': 'exit',
 			'type': 'button',
 			'title': 'Exit',
+			'visible': (OS.get_name() != 'HTML5'),
 		},
 	]
 
