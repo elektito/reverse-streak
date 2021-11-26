@@ -3,7 +3,8 @@ extends Area2D
 signal death_started()
 signal died()
 
-export (Vector2) var game_screen_size := Vector2(ProjectSettings.get('display/window/size/width'), ProjectSettings.get('display/window/size/height'))
+export(Vector2) var game_screen_size := Vector2(ProjectSettings.get('display/window/size/width'), ProjectSettings.get('display/window/size/height'))
+export(int) var level = 1 setget set_level
 
 var size := Vector2.ZERO setget set_size, get_size
 var has_died := false
@@ -92,3 +93,11 @@ func indicate_reverse():
 	$reverse_flier.modulate.a = 1.0
 	$reverse_flier.scale = prev_scale
 	$reverse_flier.visible = false
+
+
+func set_level(value: int):
+	level = value
+	if level < 1:
+		level = 1
+	if level > 4:
+		level = 4

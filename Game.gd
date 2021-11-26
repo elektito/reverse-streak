@@ -4,6 +4,7 @@ const HORIZONTAL_SPEED := 240.0
 const VERTICAL_SPEED := 350.0
 
 var mothership_spawn_rate = 0.1
+var collectible_spawn_rate = 0.05
 
 var score := 0
 var multiplier := 1
@@ -76,13 +77,21 @@ func _physics_process(delta):
 	ship.position += dir * HORIZONTAL_SPEED * delta
 	
 	if Input.is_action_just_pressed("shoot") or shoot_for_touch:
-		var bullet = preload("res://Bullet.tscn").instance()
-		bullet.position.x = ship.position.x
-		bullet.position.y = ship.position.y - 2
-		bullet.direction = Vector2.UP
-		camera.add_child(bullet)
-		shoot_sound.play()
-		shoot_for_touch = false
+		var rotations: Array = {
+			1: [0.0],
+			2: [-PI/45, PI/45],
+			3: [-PI/45, 0.0, PI/45],
+			4: [-PI/35, -PI/85, PI/85, PI/35]
+		}[ship.level]
+		for rotation in rotations:
+			var bullet = preload("res://Bullet.tscn").instance()
+			bullet.rotate(rotation)
+			bullet.position.x = ship.position.x
+			bullet.position.y = ship.position.y - 2
+			bullet.direction = Vector2.UP
+			camera.add_child(bullet)
+			shoot_sound.play()
+			shoot_for_touch = false
 	
 	if Input.is_action_just_pressed("screenshot"):
 		var image = get_viewport().get_texture().get_data()
@@ -96,7 +105,7 @@ func _on_enemy_spawn_timer_timeout():
 	enemy_spawn_rate = 1.0 / (nenemies + 4)
 	if randf() > enemy_spawn_rate:
 		return
-	spawn_enemy()
+	spawn_object()
 
 
 func _on_enemy_killed(enemy):
@@ -124,6 +133,14 @@ func _on_menu_resume():
 	enable_node($menu/screen, false)
 
 
+func _on_collectible_collected():
+	ship.level += 1
+
+
+func _on_collectible_lost():
+	ship.level -= 1
+
+
 func _process(delta):
 	score_label.text = str(score) + ('' if multiplier == 1 else ' (x' + str(multiplier) + ')')
 	reverse_badge.visible = reversed
@@ -148,6 +165,25 @@ func reverse_controls():
 		$ParallaxBackground/ParallaxLayer/Sprite.modulate = Color.red
 	else:
 		$ParallaxBackground/ParallaxLayer/Sprite.modulate = Color.white
+
+
+func spawn_object():
+	if randf() < collectible_spawn_rate:
+		spawn_collectible()
+	else:
+		spawn_enemy()
+
+
+func spawn_collectible():
+	var item = preload("res://Collectible.tscn").instance()
+	add_child(item)
+	var ncolumn = int(floor((rect_size.x - 2 * ship_size.x) / ship_size.x))
+	var column = randi() % ncolumn
+	item.position.x = ship_size.x + column * ship_size.x
+	item.position.y = camera.position.y - item.size.y
+	item.ship = ship
+	item.connect("collected", self, "_on_collectible_collected")
+	item.connect("lost", self, "_on_collectible_lost")
 
 
 func spawn_enemy():

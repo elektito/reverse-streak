@@ -74,6 +74,7 @@ pointing/emulate_touch_from_mouse=true
 2d_physics/layer_1="ship"
 2d_physics/layer_2="enemy"
 2d_physics/layer_3="bullet"
+2d_physics/layer_4="collectible"
 
 [physics]
 
