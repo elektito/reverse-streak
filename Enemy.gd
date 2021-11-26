@@ -11,6 +11,7 @@ var size := Vector2(32, 32)
 var ship
 var keep_y = false
 var column
+var died := false
 
 onready var sprite = $sprite
 
@@ -21,7 +22,8 @@ func _ready():
 
 func _on_Enemy_area_entered(area):
 	if area.is_in_group("bullets"):
-		emit_signal("killed", self)
+		if not died:
+			emit_signal("killed", self)
 	
 	die()
 
@@ -42,6 +44,9 @@ func _on_death_timer_timeout():
 
 
 func die():
+	if died:
+		return
+	died = true
 	$death_sound.play()
 	$shape.set_deferred("disabled", false)
 	set_deferred("monitorable", false)
