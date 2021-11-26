@@ -100,10 +100,9 @@ func _on_enemy_spawn_timer_timeout():
 
 
 func _on_enemy_killed(enemy):
-	if enemy.type == 1:
-		ship.indicate_reverse()
 	score += 1 * multiplier
 	if enemy.type == 1:
+		ship.indicate_reverse()
 		multiplier *= 2
 		reverse_controls()
 
