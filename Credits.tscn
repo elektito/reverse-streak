@@ -41,7 +41,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="back_btn" type="Button" parent="."]
+[node name="back_btn" type="Button" parent="." groups=["menu_buttons"]]
 margin_left = 95.0
 margin_top = 400.0
 margin_right = 171.0

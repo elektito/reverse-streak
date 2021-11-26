@@ -52,7 +52,7 @@ margin_right = 161.0
 margin_bottom = 59.0
 custom_constants/margin_top = 32
 
-[node name="btn" type="Button" parent="vbox/back/margin"]
+[node name="btn" type="Button" parent="vbox/back/margin" groups=["menu_buttons"]]
 margin_top = 32.0
 margin_right = 76.0
 margin_bottom = 59.0

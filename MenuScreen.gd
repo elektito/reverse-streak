@@ -136,9 +136,25 @@ func add_slider(desc, parent: Control) -> HSlider:
 
 
 func add_scene(desc: Dictionary, parent: Control) -> Button:
-	var scene = load(desc['scene']).instance()
+	var scene: Node = load(desc['scene']).instance()
 	scene.set_meta('menu_screen', self)
-	return _add_subscreen(desc, parent, scene)
+	
+	var return_button = _add_subscreen(desc, parent, scene)
+	
+	for button in get_all_children(scene):
+		if button.is_in_group('menu_buttons'):
+			button.focus_neighbour_left = button.get_path()
+			button.focus_neighbour_right = button.get_path()
+	
+	return return_button
+
+
+func get_all_children(node: Node):
+	var children := []
+	for  child in node.get_children():
+		children.append(child)
+		children.append_array(get_all_children(child))
+	return children
 
 
 func _add_subscreen(desc, parent: Control, screen: Control) -> Button:
