@@ -77,11 +77,29 @@ bus = "SFX"
 
 [node name="hud" type="CanvasLayer" parent="."]
 
-[node name="score_label" type="Label" parent="hud"]
-margin_left = 30.0
-margin_top = 5.0
-margin_right = 265.0
-margin_bottom = 32.0
+[node name="margin" type="MarginContainer" parent="hud"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="vbox" type="VBoxContainer" parent="hud/margin"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 266.0
+margin_bottom = 480.0
+custom_constants/separation = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="score_label" type="Label" parent="hud/margin/vbox"]
+margin_right = 262.0
+margin_bottom = 27.0
 mouse_filter = 0
 custom_fonts/font = SubResource( 1 )
 text = "0"
@@ -90,12 +108,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="reverse_badge" type="Label" parent="hud"]
-visible = false
-margin_left = 192.0
-margin_top = 36.0
-margin_right = 266.0
-margin_bottom = 50.0
+[node name="reverse_badge" type="Label" parent="hud/margin/vbox"]
+margin_top = 31.0
+margin_right = 262.0
+margin_bottom = 51.0
 custom_colors/font_color = Color( 0.992157, 1, 0, 1 )
 custom_fonts/font = SubResource( 2 )
 text = "REV"
@@ -114,5 +130,5 @@ pause_screen = true
 [connection signal="death_started" from="camera/ship" to="." method="_on_ship_death_started"]
 [connection signal="died" from="camera/ship" to="." method="_on_ship_died"]
 [connection signal="timeout" from="enemy_spawn_timer" to="." method="_on_enemy_spawn_timer_timeout"]
-[connection signal="gui_input" from="hud/score_label" to="." method="_on_score_label_gui_input"]
+[connection signal="gui_input" from="hud/margin/vbox/score_label" to="." method="_on_score_label_gui_input"]
 [connection signal="resume" from="menu/screen" to="." method="_on_menu_resume"]

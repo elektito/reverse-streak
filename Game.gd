@@ -15,9 +15,9 @@ var shoot_for_touch := false
 
 onready var camera = $camera
 onready var ship = $camera/ship
-onready var score_label = $hud/score_label
+onready var score_label = $hud/margin/vbox/score_label
 onready var shoot_sound = $shoot_sound
-onready var reverse_badge = $hud/reverse_badge
+onready var reverse_badge = $hud/margin/vbox/reverse_badge
 
 onready var ship_size: Vector2 = ship.sprite.texture.get_size()
 
@@ -127,6 +127,14 @@ func _on_menu_resume():
 func _process(delta):
 	score_label.text = str(score) + ('' if multiplier == 1 else ' (x' + str(multiplier) + ')')
 	reverse_badge.visible = reversed
+	
+	# scale the label if needed so that it always fits the screen
+	var max_label_width = ProjectSettings.get("display/window/size/width") - 8
+	var w = score_label.get_font("font").get_string_size(score_label.text).x
+	if w > max_label_width and score_label.get_font("font").size > 8:
+		var new_font = score_label.get_font("font").duplicate()
+		score_label.add_font_override("font", new_font)
+		score_label.get_font("font").size -= 1
 
 
 func _on_score_label_gui_input(event):
